@@ -51,9 +51,13 @@ object SimpleRx {
         behaviorSubject.onNext(48) // duplicates show as new events by default
 
         //1 onError
-        val someException = IllegalArgumentException("some fake error")
-        behaviorSubject.onError(someException)
-        behaviorSubject.onNext(109) // will never show because of an error pushed to the behaviorSubject
+//        val someException = IllegalArgumentException("some fake error")
+//        behaviorSubject.onError(someException)
+//        behaviorSubject.onNext(109) // will never show because of an error pushed to the behaviorSubject
+
+        //2 onComplete
+        behaviorSubject.onComplete()
+        behaviorSubject.onNext(109349) // this will never show due to completion
 
     }
 
