@@ -26,6 +26,7 @@ class LearningRxJavaApplication: Application() {
 //        SimpleRx.simpleValues()
 //        SimpleRx.subjects()
         SimpleRx.basicObservable()
+        SimpleRx.creatingObservables()
     }
 
     //region Database Setup Methods

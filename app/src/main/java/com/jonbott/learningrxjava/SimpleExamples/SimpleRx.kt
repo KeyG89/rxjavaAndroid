@@ -3,13 +3,16 @@ package com.jonbott.learningrxjava.SimpleExamples
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jonbott.learningrxjava.Common.disposedBy
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.Observables
+import io.reactivex.rxkotlin.toObservable
 import io.reactivex.subjects.BehaviorSubject
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
+import java.util.concurrent.TimeUnit
 
 object SimpleRx {
     var bag = CompositeDisposable()
@@ -94,4 +97,17 @@ object SimpleRx {
         observer.disposedBy(bag)
     }
 
+    fun creatingObservables(){
+        val observable = Observable.just(23)
+        val observableTime = Observable.interval(300, TimeUnit.MILLISECONDS).timeInterval(AndroidSchedulers.mainThread())
+        val userIds = arrayOf(1,2,3,4,5,6)
+        val observableArray = Observable.fromArray(*userIds) // When we call a vararg-function, we can pass arguments one-by-one,
+                                                            // e.g. asList(1, 2, 3), or, if we already have an array and want to pass
+                                                            //  its contents to the function, we use the spread operator (prefix the array with *):
+        val observableArrays2 = userIds.toObservable()
+
+
+
+
+    }
 }
