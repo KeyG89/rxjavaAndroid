@@ -7,7 +7,9 @@ import com.jonbott.learningrxjava.Common.fromJson
 import com.jonbott.learningrxjava.ModelLayer.PersistenceLayer.LocalDatabase
 import com.jonbott.learningrxjava.ModelLayer.PersistenceLayer.PersistenceLayer
 import com.jonbott.learningrxjava.ModelLayer.PersistenceLayer.PhotoDescription
-import kotlinx.coroutines.experimental.launch
+import com.jonbott.learningrxjava.SimpleExamples.SimpleRx
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class LearningRxJavaApplication: Application() {
 
@@ -21,6 +23,7 @@ class LearningRxJavaApplication: Application() {
         println("Simple App being used.")
 
         setupDatabase()
+        SimpleRx.simpleValues()
     }
 
     //region Database Setup Methods
@@ -28,7 +31,7 @@ class LearningRxJavaApplication: Application() {
     fun setupDatabase(){
         LearningRxJavaApplication.database = Room.databaseBuilder(this, LocalDatabase::class.java, "LearningRxJavaLocalDatabase").build()
 
-        launch {
+        GlobalScope.launch {
             val photoDescriptions = loadJson()
             PersistenceLayer.shared.prepareDb(photoDescriptions)
         }
