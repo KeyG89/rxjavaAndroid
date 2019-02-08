@@ -97,16 +97,14 @@ object SimpleRx {
         observer.disposedBy(bag)
     }
 
-    fun creatingObservables(){
+    fun creatingObservables() {
         val observable = Observable.just(23)
         val observableTime = Observable.interval(300, TimeUnit.MILLISECONDS).timeInterval(AndroidSchedulers.mainThread())
-        val userIds = arrayOf(1,2,3,4,5,6)
+        val userIds = arrayOf(1, 2, 3, 4, 5, 6)
         val observableArray = Observable.fromArray(*userIds) // When we call a vararg-function, we can pass arguments one-by-one,
-                                                            // e.g. asList(1, 2, 3), or, if we already have an array and want to pass
-                                                            //  its contents to the function, we use the spread operator (prefix the array with *):
+        // e.g. asList(1, 2, 3), or, if we already have an array and want to pass
+        //  its contents to the function, we use the spread operator (prefix the array with *):
         val observableArrays2 = userIds.toObservable()
-
-
 
 
     }
