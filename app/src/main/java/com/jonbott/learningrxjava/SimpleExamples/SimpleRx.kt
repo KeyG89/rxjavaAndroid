@@ -1,8 +1,14 @@
 package com.jonbott.learningrxjava.SimpleExamples
 
 import com.jakewharton.rxrelay2.BehaviorRelay
+import com.jonbott.learningrxjava.Common.disposedBy
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.Observables
 import io.reactivex.subjects.BehaviorSubject
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
 object SimpleRx {
@@ -59,6 +65,33 @@ object SimpleRx {
         behaviorSubject.onComplete()
         behaviorSubject.onNext(109349) // this will never show due to completion
 
+    }
+
+    fun basicObservable() {
+        // The observable
+        val observable = Observable.create<String> { observer ->
+            // The lambda is called for every subscriber - by default
+            println("🙌 ~~~~~ Observable logic being triggered ~~")
+
+            // Do work on a background thread
+            GlobalScope.launch {
+                delay(1000) // artificial delay 1 second
+
+                observer.onNext("some value 23")
+                observer.onComplete()
+            }
+
+        }
+
+        observable.subscribe { someString ->
+            println("🙌 ~~~~~ new value: $someString ~~")
+        }.disposedBy(bag)
+
+        val observer = observable.subscribe { someString ->
+            println("🙌 ~~~~~ Another subscriber: $someString ~~")
+        }
+
+        observer.disposedBy(bag)
     }
 
 }
