@@ -1,6 +1,8 @@
 package com.jonbott.learningrxjava.ModelLayer
 
+import android.support.design.widget.AppBarLayout
 import com.jakewharton.rxrelay2.BehaviorRelay
+import com.jonbott.learningrxjava.ModelLayer.Entities.Message
 import com.jonbott.learningrxjava.ModelLayer.NetworkLayer.NetworkLayer
 import com.jonbott.learningrxjava.ModelLayer.PersistenceLayer.PersistenceLayer
 import com.jonbott.learningrxjava.ModelLayer.PersistenceLayer.PhotoDescription
@@ -12,6 +14,7 @@ class ModelLayer {
     }
 
     val photoDescriptions = BehaviorRelay.createDefault(listOf<PhotoDescription>())
+    val messages = BehaviorRelay.createDefault(listOf<Message>())
 
     private val networkLayer = NetworkLayer.instance
     private val persistenceLayer = PersistenceLayer.shared
@@ -21,5 +24,22 @@ class ModelLayer {
             this.photoDescriptions.accept(photoDescriptions)
 
         }
+
+
+
+        fun getMessages(){
+            return networkLayer.getMessages({messages ->
+                this.messages.accept(messages)
+            }, {errorMessage ->
+                notifyOfError(errorMessage)
+
+            }
+            )
+        }
+    }
+
+    fun notifyOfError(errorMessage: String) {
+        // notify user somehow
+        println("❗ Error occured: $errorMessage")
     }
 }
