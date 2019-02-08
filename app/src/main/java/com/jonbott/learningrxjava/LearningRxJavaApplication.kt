@@ -23,7 +23,8 @@ class LearningRxJavaApplication: Application() {
         println("Simple App being used.")
 
         setupDatabase()
-        SimpleRx.simpleValues()
+//        SimpleRx.simpleValues()
+        SimpleRx.subjects()
     }
 
     //region Database Setup Methods
