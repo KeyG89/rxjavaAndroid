@@ -3,6 +3,7 @@ package com.jonbott.learningrxjava.SimpleExamples
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
+import java.lang.IllegalArgumentException
 
 object SimpleRx {
     var bag = CompositeDisposable()
@@ -48,6 +49,11 @@ object SimpleRx {
         behaviorSubject.onNext(34)
         behaviorSubject.onNext(48)
         behaviorSubject.onNext(48) // duplicates show as new events by default
+
+        //1 onError
+        val someException = IllegalArgumentException("some fake error")
+        behaviorSubject.onError(someException)
+        behaviorSubject.onNext(109) // will never show because of an error pushed to the behaviorSubject
 
     }
 
