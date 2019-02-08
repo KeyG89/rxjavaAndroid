@@ -16,5 +16,14 @@ object SimpleRx {
 
         someInfo.accept("2")
         println("❤ someInfo.value ${ someInfo.value}")
+
+        someInfo.subscribe{ newValue ->
+            println("🤣 value has changed $newValue")
+
+        }
+
+        someInfo.accept("3")
+
+        // NOTE: Relays will never receive onError, and onComplete events
     }
 }
