@@ -8,8 +8,8 @@ import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 typealias PhotoDescriptionLambda = (List<PhotoDescription>) -> Unit
@@ -25,7 +25,7 @@ class PersistenceLayer {
 
     fun prepareDb(photoDescriptions: List<PhotoDescription>) {
 
-        launch {
+        GlobalScope.launch {
             val database = LearningRxJavaApplication.database
 
 //            database.openHelper.writableDatabase.execSQL("DELETE from photo_descriptions")
@@ -52,11 +52,11 @@ class PersistenceLayer {
 
     private fun getDescriptionsWithCoroutines(finished: PhotoDescriptionLambda) {
         //assume a large data set in backend
-        launch {
+        GlobalScope.launch {
             LearningRxJavaApplication.database.photoDescriptionDao()
                     .getDescriptions()
                     .subscribe { list ->
-                        launch(UI) {
+                        launch() {
                             finished(list)
                         }
                     }
