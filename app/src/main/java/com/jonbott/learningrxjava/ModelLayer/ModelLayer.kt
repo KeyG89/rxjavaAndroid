@@ -19,23 +19,22 @@ class ModelLayer {
     private val networkLayer = NetworkLayer.instance
     private val persistenceLayer = PersistenceLayer.shared
 
-    fun loadAllPhotoDescriptions(){ //result may be immediate, but use async callback
+    fun loadAllPhotoDescriptions() { //result may be immediate, but use async callback
         persistenceLayer.loadAllPhotoDescriptions { photoDescriptions ->
             this.photoDescriptions.accept(photoDescriptions)
 
         }
 
+    }
 
+    fun getMessages() {
+        return networkLayer.getMessages({ messages ->
+            this.messages.accept(messages)
+        }, { errorMessage ->
+            notifyOfError(errorMessage)
 
-        fun getMessages(){
-            return networkLayer.getMessages({messages ->
-                this.messages.accept(messages)
-            }, {errorMessage ->
-                notifyOfError(errorMessage)
-
-            }
-            )
         }
+        )
     }
 
     fun notifyOfError(errorMessage: String) {
