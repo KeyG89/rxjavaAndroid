@@ -19,6 +19,7 @@ class ModelLayer {
     fun loadAllPhotoDescriptions(){ //result may be immediate, but use async callback
         persistenceLayer.loadAllPhotoDescriptions { photoDescriptions ->
             this.photoDescriptions.accept(photoDescriptions)
+
         }
     }
 }

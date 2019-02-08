@@ -11,13 +11,13 @@ class DatabaseExamplePresenter {
     val modelLayer = ModelLayer.shared //normally injected
 
     val photoDescriptions: BehaviorRelay<List<PhotoDescription>>
-        get() = modelLayer.photoDescriptions // bubbling up for the lower layer
+        get() = modelLayer.photoDescriptions //bubbling up from the lower layers
 
     init {
-        GlobalScope.launch {
-            delay(3000) // 3 seconds
-            modelLayer.loadAllPhotoDescriptions()
+        GlobalScope.launch{
+            delay(3000) //3 seconds
 
+            modelLayer.loadAllPhotoDescriptions()
         }
     }
 
