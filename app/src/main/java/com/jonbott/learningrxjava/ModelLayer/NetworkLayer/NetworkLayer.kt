@@ -2,14 +2,21 @@ package com.jonbott.learningrxjava.ModelLayer.NetworkLayer
 
 import com.jonbott.datalayerexample.DataLayer.NetworkLayer.EndpointInterfaces.JsonPlaceHolder
 import com.jonbott.datalayerexample.DataLayer.NetworkLayer.Helpers.ServiceGenerator
+import com.jonbott.learningrxjava.Common.NullBox
 import com.jonbott.learningrxjava.Common.StringLambda
 import com.jonbott.learningrxjava.Common.VoidLambda
 import com.jonbott.learningrxjava.ModelLayer.Entities.Message
+import com.jonbott.learningrxjava.ModelLayer.Entities.Person
 import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
+import java.lang.Exception
+import com.github.kittinunf.result.Result
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 typealias MessageLambda = (Message?)->Unit
@@ -118,5 +125,32 @@ class NetworkLayer {
     }
 
     //endregion
+
+    // region Tawsk Example
+
+    //Make one Observable for each person in a list
+
+    //Wrap task in Reactive Observable
+
+    //Create a Network Task
+    fun getInfoFor(person: Person, finished:(Result<NullBox<String>, Exception>) -> Unit){
+        //Execute on Background Thread
+        //Do your task here
+
+        GlobalScope.launch {
+            println("start network call: $person")
+            val randomTime = person.age* 1000 // to milliseconds
+            delay(randomTime.toLong())
+            print("finished network call  $person")
+
+            //just randomly make odd people null
+            var result = Result.of(NullBox(person.toString()))
+
+            finished(result)
+        }
+
+
+    }
+    //
 
 }
