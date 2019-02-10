@@ -6,6 +6,7 @@ import com.jonbott.learningrxjava.ModelLayer.Entities.Message
 import com.jonbott.learningrxjava.ModelLayer.NetworkLayer.NetworkLayer
 import com.jonbott.learningrxjava.ModelLayer.PersistenceLayer.PersistenceLayer
 import com.jonbott.learningrxjava.ModelLayer.PersistenceLayer.PhotoDescription
+import io.reactivex.Single
 
 class ModelLayer {
 
@@ -40,5 +41,9 @@ class ModelLayer {
     fun notifyOfError(errorMessage: String) {
         // notify user somehow
         println("❗ Error occured: $errorMessage")
+    }
+
+    fun getMessagesRx() : Single<List<Message>> {
+        return networkLayer.getMessagesRx()
     }
 }

@@ -5,6 +5,7 @@ import com.jonbott.datalayerexample.DataLayer.NetworkLayer.Helpers.ServiceGenera
 import com.jonbott.learningrxjava.Common.StringLambda
 import com.jonbott.learningrxjava.Common.VoidLambda
 import com.jonbott.learningrxjava.ModelLayer.Entities.Message
+import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,6 +22,20 @@ class NetworkLayer {
 
     init {
         placeHolderApi = ServiceGenerator.createService(JsonPlaceHolder::class.java)
+    }
+
+    // region End Point - Fully Rx
+
+    fun getMessageRx(articleId: String): Single<Message>{
+        return placeHolderApi.getMessageRx(articleId)
+    }
+
+    fun getMessagesRx(): Single<List<Message>>{
+        return placeHolderApi.getMessagesRx()
+    }
+
+    fun postMessageRx(message: Message): Single<Message>{
+        return placeHolderApi.postMessageRx(message)
     }
 
 
