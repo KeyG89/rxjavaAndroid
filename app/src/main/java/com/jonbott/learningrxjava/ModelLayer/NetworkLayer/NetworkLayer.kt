@@ -15,6 +15,7 @@ import java.io.IOException
 import java.lang.Exception
 import com.github.kittinunf.result.Result
 import io.reactivex.Observable
+import io.reactivex.rxkotlin.zip
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -130,6 +131,17 @@ class NetworkLayer {
     // region Tawsk Example
 
     //Make one Observable for each person in a list
+    fun loadInfoFor(people: List<Person>): Observable<List<String>> {
+        //Foreach person make a network call
+        val networkObservables = people.map(::buildGetInfoNetworkCallFor)
+
+        // when all server results have returned zip observables into a single observable
+        return networkObservables.zip{ list ->
+            list.filter { box -> box.value !=null}
+                    .map {it.value!!}
+
+        }
+    }
 
     //Wrap task in Reactive Observable
     //This pattern is used often for units of work
