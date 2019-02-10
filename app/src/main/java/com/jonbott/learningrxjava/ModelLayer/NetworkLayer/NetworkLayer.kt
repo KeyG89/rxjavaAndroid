@@ -14,6 +14,7 @@ import retrofit2.Response
 import java.io.IOException
 import java.lang.Exception
 import com.github.kittinunf.result.Result
+import io.reactivex.Observable
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -131,6 +132,25 @@ class NetworkLayer {
     //Make one Observable for each person in a list
 
     //Wrap task in Reactive Observable
+    //This pattern is used often for units of work
+    private fun buildGetInfoNetworkCallFor(person: Person) : Observable<NullBox<String>> {
+
+        return Observable.create{observer ->
+            //Execute Request - Do actual work here
+            getInfoFor(person) {result ->
+                result.fold({info ->
+                    observer.onNext(info)
+                    observer.onComplete()
+                }, {error ->
+                    //do something with error, or just pass it on
+                    observer.onError(error)
+                })
+
+            }
+
+        }
+
+    }
 
     //Create a Network Task
     fun getInfoFor(person: Person, finished:(Result<NullBox<String>, Exception>) -> Unit){
