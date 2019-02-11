@@ -14,6 +14,7 @@ import retrofit2.Response
 import java.io.IOException
 import java.lang.Exception
 import com.github.kittinunf.result.Result
+import com.jonbott.learningrxjava.Common.EmptyDescriptionException
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.zip
 import kotlinx.coroutines.GlobalScope
@@ -147,7 +148,7 @@ class NetworkLayer {
     //This pattern is used often for units of work
     private fun buildGetInfoNetworkCallFor(person: Person) : Observable<NullBox<String>> {
 
-        return Observable.create{observer ->
+        return Observable.create<NullBox<String>> { observer ->
             //Execute Request - Do actual work here
             getInfoFor(person) {result ->
                 result.fold({info ->        // fold separates success from error state
@@ -160,7 +161,7 @@ class NetworkLayer {
 
             }
 
-        }
+        }.onErrorReturn { NullBox(null) }
 
     }
 
@@ -183,9 +184,11 @@ class NetworkLayer {
             var result = if(isEven) Result.of(NullBox(person.firstName))
                                else Result.of(NullBox<String>(null))
 
-
-
             //Adding Exceptions
+            if(person.age > 3 ) {
+                result = Result.of { throw EmptyDescriptionException("This person's age is > 3")}
+            }
+
             //Result.Failure
 
             finished(result)
