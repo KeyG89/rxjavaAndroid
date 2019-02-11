@@ -176,7 +176,17 @@ class NetworkLayer {
             println("finished network call  $person")
 
             //just randomly make odd people null
-            var result = Result.of(NullBox(person.toString()))
+//            var result = Result.of(NullBox(person.toString()))
+
+            //Adding Nulls
+            val isEven = person.age % 2 == 0
+            var result = if(isEven) Result.of(NullBox(person.firstName))
+                               else Result.of(NullBox<String>(null))
+
+
+
+            //Adding Exceptions
+            //Result.Failure
 
             finished(result)
         }
