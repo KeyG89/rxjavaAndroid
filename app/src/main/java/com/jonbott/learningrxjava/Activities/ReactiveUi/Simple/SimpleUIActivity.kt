@@ -3,6 +3,7 @@ package com.jonbott.learningrxjava.Activities.ReactiveUi.Simple
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.ArrayAdapter
+import com.jakewharton.rxbinding2.widget.RxTextView
 import com.jonbott.learningrxjava.Common.disposedBy
 import com.jonbott.learningrxjava.ModelLayer.Entities.Friend
 import com.jonbott.learningrxjava.R
@@ -26,8 +27,17 @@ class SimpleUIActivity : AppCompatActivity() {
 
     private fun rxExamples() {
 
-        simpleRx()
+//        simpleRx()
+        RxBindTitle()
         rxSimpleListBind()
+    }
+
+    private fun RxBindTitle() {
+        presenter.title.observeOn((AndroidSchedulers.mainThread()))
+                .onErrorReturn { "Default Value" }
+                .share()
+                .subscribe(RxTextView.text(simpleUITitleTextView))
+                .disposedBy(bag)
     }
 
     private fun simpleRx() {
