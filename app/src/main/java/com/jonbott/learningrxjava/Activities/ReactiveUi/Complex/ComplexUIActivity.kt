@@ -1,9 +1,14 @@
 package com.jonbott.learningrxjava.Activities.ReactiveUi.Complex
 
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import com.jonbott.learningrxjava.Common.disposedBy
 import com.jonbott.learningrxjava.R
 import com.jonbott.learningrxjava.databinding.ActivityComplexUiBinding
+import com.jonbott.learningrxjava.databinding.ItemReactiveUiBinding
+import com.minimize.android.rxrecycleradapter.RxDataSource
 import io.reactivex.disposables.CompositeDisposable
 
 
@@ -21,7 +26,6 @@ class ReactiveUIActivity : AppCompatActivity() {
 
     lateinit var boundActivity: ActivityComplexUiBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_complex_ui)
@@ -29,11 +33,27 @@ class ReactiveUIActivity : AppCompatActivity() {
         showSimpleBindingExample()
     }
 
-    private fun showSimpleBindingExample() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun commonInit () {
+        boundActivity = DataBindingUtil.setContentView(this, R.layout.activity_complex_ui)
+        boundActivity.reactiveUIRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 
-    private fun commonInit() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun showSimpleBindingExample () {
+        val rxDataSource = RxDataSource<ItemReactiveUiBinding, String>(R.layout.item_reactive_ui, dataSet)
+        rxDataSource.bindRecyclerView(boundActivity.reactiveUIRecyclerView)
+
+        rxDataSource.map { it.toUpperCase() }
+                .asObservable()
+                .subscribe {
+                    val ui = it.viewDataBinding ?: return@subscribe
+                    val data = it.item
+
+                    ui.textViewItem.text = data
+                }.disposedBy(bag)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        bag.clear()
     }
 }
