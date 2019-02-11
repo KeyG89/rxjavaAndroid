@@ -4,6 +4,7 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jonbott.learningrxjava.ModelLayer.Entities.Friend
 import io.reactivex.subjects.BehaviorSubject
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -44,7 +45,7 @@ class SimpleUIPresenter {
                     Friend("Dolly", "Delapaz"),
                     Friend("Juliane", "Jobin"))
 
-            launch {
+            MainScope().launch() {
                 friends.accept(newFriends)
             }
         }

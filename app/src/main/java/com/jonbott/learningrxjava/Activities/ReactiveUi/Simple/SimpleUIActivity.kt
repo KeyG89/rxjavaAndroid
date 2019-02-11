@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.ArrayAdapter
 import com.jonbott.learningrxjava.Common.disposedBy
+import com.jonbott.learningrxjava.ModelLayer.Entities.Friend
 import com.jonbott.learningrxjava.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -48,6 +49,19 @@ class SimpleUIActivity : AppCompatActivity() {
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems)
 
         simpleUIListView.adapter = adapter
+
+        presenter.friends.subscribeOn(AndroidSchedulers.mainThread())
+                        .subscribe(::updateList)
+
+    }
+
+    private fun updateList(item: List<Friend> ) {
+        val itemsArray = item.map { it.description}.toTypedArray()
+
+        adapter.clear()
+        adapter.addAll(*itemsArray) // turns an array to list of items
+        adapter.notifyDataSetChanged()
+
     }
 
     override fun onDestroy() {
