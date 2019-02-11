@@ -150,7 +150,7 @@ class NetworkLayer {
         return Observable.create{observer ->
             //Execute Request - Do actual work here
             getInfoFor(person) {result ->
-                result.fold({info ->
+                result.fold({info ->        // fold separates success from error state
                     observer.onNext(info)
                     observer.onComplete()
                 }, {error ->
@@ -173,7 +173,7 @@ class NetworkLayer {
             println("start network call: $person")
             val randomTime = person.age* 1000 // to milliseconds
             delay(randomTime.toLong())
-            print("finished network call  $person")
+            println("finished network call  $person")
 
             //just randomly make odd people null
             var result = Result.of(NullBox(person.toString()))
