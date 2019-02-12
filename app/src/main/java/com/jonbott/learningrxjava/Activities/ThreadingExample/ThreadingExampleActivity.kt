@@ -7,8 +7,11 @@ import com.jonbott.learningrxjava.Common.disposedBy
 import com.jonbott.learningrxjava.ModelLayer.Entities.Friend
 import com.jonbott.learningrxjava.R
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_threading_example.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 //Schedulers
 //https://android.jlelse.eu/rxjava-schedulers-what-when-and-how-to-use-it-6cfc27293add
@@ -34,8 +37,8 @@ class ThreadingExampleActivity : AppCompatActivity() {
     }
 
     private fun threadingExamples() {
-//        threading()
-        threading2()
+        threading()
+//        threading2()
     }
 
 
@@ -43,12 +46,12 @@ class ThreadingExampleActivity : AppCompatActivity() {
 
     private fun threading() {
         presenter.friends
-//                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { items ->
                     println("🚦 current thread: ${Thread.currentThread().id}")
                     println("⁉️🌲 is on UI thread: ${Thread.currentThread().id == mainThreadId}")
 
-//                    launch(UI) {
+//                   MainScope().launch { // Main Thread
                         updateList(items)
 //                    }
                 }.disposedBy(bag)

@@ -4,6 +4,7 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jonbott.learningrxjava.ModelLayer.Entities.Friend
 import io.reactivex.subjects.BehaviorSubject
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
@@ -11,7 +12,7 @@ import kotlin.concurrent.thread
 class ThreadingExamplePresenter {
 
     val friends = BehaviorRelay.createDefault(listOf<Friend>())
-    val title   = BehaviorSubject.createDefault("Default Title")
+    val title = BehaviorSubject.createDefault("Default Title")
     val friendsLoaded = BehaviorRelay.createDefault(false)
 
     init {
@@ -23,7 +24,6 @@ class ThreadingExamplePresenter {
 
 //        thread(start = true){
 //            Thread.sleep(3000)
-
 
 
         GlobalScope.launch {
@@ -53,9 +53,9 @@ class ThreadingExamplePresenter {
                     Friend("Dolly", "Delapaz"),
                     Friend("Juliane", "Jobin"))
 
-//            launch(UI) {
-            friends.accept(newFriends)
-//            }
+            MainScope().launch {
+                friends.accept(newFriends)
+            }
         }
     }
 }
