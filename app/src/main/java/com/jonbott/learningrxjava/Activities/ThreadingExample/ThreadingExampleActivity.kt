@@ -9,8 +9,11 @@ import com.jonbott.learningrxjava.R
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_threading_example.*
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 //Schedulers
@@ -37,8 +40,8 @@ class ThreadingExampleActivity : AppCompatActivity() {
     }
 
     private fun threadingExamples() {
-        threading()
-//        threading2()
+//        threading()
+        threading2()
     }
 
 
@@ -62,9 +65,9 @@ class ThreadingExampleActivity : AppCompatActivity() {
         val single = getResult()
 
         single
-//                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
 //                .observeOn(Schedulers.newThread())
-//                .subscribeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.computation())
                 .subscribe{ result ->
                     println("🚦 current thread: ${Thread.currentThread().id}")
                     println("⁉️🐢 is on UI thread: ${Thread.currentThread().id == mainThreadId}")
@@ -74,7 +77,7 @@ class ThreadingExampleActivity : AppCompatActivity() {
 
     fun getResult(): Observable<String> {
         return Observable.create { observer ->
-//            launch {
+//            GlobalScope.launch {
 //                delay(3000)
 
                 println("🚦 current thread: ${Thread.currentThread().id}")
